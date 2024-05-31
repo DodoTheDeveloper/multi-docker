@@ -44,25 +44,20 @@ app.get("/", (req, res) => {
 
 app.get("/values/all", async (req, res) => {
   const values = await pgClient.query("SELECT * from values");
-  console.log("[DODO] /values/all values.rows", values.rows);
   res.send(values.rows);
 });
 
 app.get("/values/current", async (req, res) => {
-  console.log("[DODO] values/current");
   redisClient.hgetall("values", (err, values) => {
-    console.log("[DODO] values/current values", values, err);
     res.send(values);
   });
 });
 
 app.post("/values", async (req, res) => {
-  console.log("[DODO] POST /values", req.body, req.body.index);
   const index = req.body.index;
   if (parseInt(index) > 40) {
     return res.status(422).send("Index too high");
   }
-  console.log("[DODO] POST /values index", index);
   redisClient.hset("values", index, "Nothing yet!");
   await redisPublisher.publish("insert", index);
   pgClient.query("INSERT INTO values(number) VALUES($1)", [index]);
