@@ -1,0 +1,24 @@
+name: build
+
+on:
+  release:
+    types: [create]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Build Dev Docker Image
+        run: |
+          ls
+          docker build -t dodo/multi-client -f ./complex/client/Dockerfile.dev ./complex/client
+      - name: Run tests
+        run: docker run -e CI=true dodo/multi-client npm run test
+      - name: Build production images
+        run: | 
+          docker build -t dodo/multi-client -f ./complex/client/Dockerfile.dev ./complex/client
+          docker build -t dodo/multi-nginx -f ./complex/nginx/Dockerfile.dev ./complex/nginx
+          docker build -t dodo/multi-server -f ./complex/server/Dockerfile.dev ./complex/server
+          docker build -t dodo/mutli-worker -f ./complex/worker/Dockerfile.dev ./complex/worker
