@@ -22,14 +22,14 @@ jobs:
           docker build -t dodo/multi-nginx -f ./complex/nginx/Dockerfile.dev ./complex/nginx
           docker build -t dodo/multi-server -f ./complex/server/Dockerfile.dev ./complex/server
           docker build -t dodo/mutli-worker -f ./complex/worker/Dockerfile.dev ./complex/worker
-          #      - name: Docker Login
-          #        uses: docker/login-action@v3.3.0
-          #        with:
-          #          username: ${{ secrets.DOCKER_ID }}
-          #          password: ${{ secrets.DOCKER_PASSWORD }}
-          #      - name: Push images
-          #        run: |
-          #          docker push -t dodo/multi-client
-          #          docker push -t dodo/multi-nginx
-          #          docker push -t dodo/multi-server
-          #          docker push -t dodo/mutli-worker
+      - name: Docker Login
+        uses: docker/login-action@v3.3.0
+        with:
+            username: ${{ secrets.DOCKER_ID }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push images
+        run: |
+          docker push -t dodo/multi-client
+          docker push -t dodo/multi-nginx
+          docker push -t dodo/multi-server
+          docker push -t dodo/mutli-worker
