@@ -18,18 +18,18 @@ jobs:
         run: docker run -e CI=true dodo/multi-client npm run test
       - name: Build production images
         run: | 
-          docker build -t dodo/multi-client -f ./complex/client/Dockerfile.dev ./complex/client
-          docker build -t dodo/multi-nginx -f ./complex/nginx/Dockerfile.dev ./complex/nginx
-          docker build -t dodo/multi-server -f ./complex/server/Dockerfile.dev ./complex/server
-          docker build -t dodo/mutli-worker -f ./complex/worker/Dockerfile.dev ./complex/worker
+          docker build -t dodothedeveloper/multi-client -f ./complex/client/Dockerfile.dev ./complex/client
+          docker build -t dodothedeveloper/multi-nginx -f ./complex/nginx/Dockerfile.dev ./complex/nginx
+          docker build -t dodothedeveloper/multi-server -f ./complex/server/Dockerfile.dev ./complex/server
+          docker build -t dodothedeveloper/mutli-worker -f ./complex/worker/Dockerfile.dev ./complex/worker
       - name: Docker Login
         uses: docker/login-action@v3.3.0
         with:
             username: ${{ secrets.DOCKER_ID }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+            password: ${{ secrets.DOCKER_PASSWORD }} 
       - name: Push images
         run: |
-          docker push dodo/multi-client
-          docker push dodo/multi-nginx
-          docker push dodo/multi-server
-          docker push dodo/mutli-worker
+          docker push dodothedeveloper/multi-client
+          docker push dodothedeveloper/multi-nginx
+          docker push dodothedeveloper/multi-server
+          docker push dodothedeveloper/mutli-worker
