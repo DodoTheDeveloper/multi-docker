@@ -34,7 +34,7 @@ jobs:
           docker push dodothedeveloper/multi-server
           docker push dodothedeveloper/mutli-worker
       - name: Generate deployment package
-        run: zip deploy.zip ./complex/Dockerrun.aws.json -x '*.git*'
+        run: zip -r deploy.zip ./complex -x '*.git*'
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
         with:
