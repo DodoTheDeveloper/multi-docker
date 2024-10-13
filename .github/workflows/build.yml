@@ -45,5 +45,5 @@ jobs:
           application_name: "multi-docker-1"
           environment_name: "	Multi-docker-1-env"
           version_label: "${{ github.sha }}"
-          deployment_package: deploy.zip
+          deployment_package: "complex/deploy.zip"
           use_existing_version_if_available: true
