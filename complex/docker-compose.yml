@@ -1,11 +1,11 @@
 version: "3"
 services:
   client:
-    image: "dodothedeveloper/multi-client"
-    mem_limit: 256m
+    image: "dodothedeveloper/multi-client:v1"
+    mem_limit: 512m
     hostname: client
   server:
-    image: "dodothedeveloper/multi-server"
+    image: "dodothedeveloper/multi-server:v1"
     mem_limit: 256m
     hostname: api
     environment:
@@ -17,14 +17,14 @@ services:
       - PGPASSWORD=$PGPASSWORD
       - PGPORT=$PGPORT
   worker:
-    image: "dodothedeveloper/multi-worker"
+    image: "dodothedeveloper/multi-worker:v1"
     mem_limit: 256m
     hostname: worker
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
   nginx:
-    image: "dodothedeveloper/multi-nginx"
+    image: "dodothedeveloper/multi-nginx:v1"
     mem_limit: 256m
     hostname: nginx
     ports:
