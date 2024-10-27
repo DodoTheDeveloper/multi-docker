@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Page = () => {
+const OtherPage = () => {
   return (
     <div>
       Im some other page!
@@ -9,4 +9,5 @@ const Page = () => {
     </div>
   );
 };
-export default Page
+
+export default OtherPage;

@@ -1,0 +1,50 @@
+name: deploy multi docker
+
+on:
+  release:
+    types: [create]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Build Dev Docker Image
+        run: |
+          ls
+          docker build -t dodo/multi-client -f ./complex/client/Dockerfile.dev ./complex/client
+      - name: Run tests
+        run: docker run -e CI=true dodo/multi-client npm run test
+      - name: Build production images
+        run: | 
+          docker build -t dodothedeveloper/multi-client:v1 -f ./complex/client/Dockerfile ./complex/client
+          docker build -t dodothedeveloper/multi-nginx:v1 -f ./complex/nginx/Dockerfile ./complex/nginx
+          docker build -t dodothedeveloper/multi-server:v1 -f ./complex/server/Dockerfile ./complex/server
+          docker build -t dodothedeveloper/multi-worker:v1 -f ./complex/worker/Dockerfile ./complex/worker
+      - name: Docker Login
+        uses: docker/login-action@v3.3.0
+        with:
+            username: ${{ secrets.DOCKER_ID }}
+            password: ${{ secrets.DOCKER_PASSWORD }} 
+      - name: Push images
+        run: |
+          docker push dodothedeveloper/multi-client:v1
+          docker push dodothedeveloper/multi-nginx:v1
+          docker push dodothedeveloper/multi-server:v1
+          docker push dodothedeveloper/multi-worker:v1
+      - name: Generate deployment package
+        run: |
+          cd ./complex && zip -r deploy.zip ./docker-compose.yml -x '*.git*'
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          region: "eu-north-1"
+          application_name: "multi-docker-1"
+          environment_name: "	Multi-docker-1-env"
+          version_label: "${{ github.sha }}"
+          deployment_package: "complex/deploy.zip"
+          use_existing_version_if_available: true
+
