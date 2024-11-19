@@ -1,11 +1,11 @@
 version: '3'
 services:
   client:
-    image: 'dodothedeveloper/multi-client:v2'
+    image: 'rallycoding/multi-client'
     mem_limit: 128m
     hostname: client
   server:
-    image: 'dodothedeveloper/multi-server:v2'
+    image: 'rallycoding/multi-server'
     mem_limit: 128m
     hostname: api
     environment:
@@ -17,14 +17,14 @@ services:
       - PGPASSWORD=$PGPASSWORD
       - PGPORT=$PGPORT
   worker:
-    image: 'dodothedeveloper/multi-worker:v2'
+    image: 'rallycoding/multi-worker'
     mem_limit: 128m
     hostname: worker
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
   nginx:
-    image: 'dodothedeveloper/multi-nginx:v2'
+    image: 'rallycoding/multi-nginx'
     mem_limit: 128m
     hostname: nginx
     ports:
